@@ -1,0 +1,154 @@
+<! DOCTYPE html>
+
+<Html lang= "en-us">
+
+<Head>
+
+
+		<title>Customer Information Form</title>
+
+		<link rel= "stylesheet" href= "styles.css">
+		<meta charset= "UTF-8">
+
+</Head>
+
+<Body style="background-color:lavender;">
+
+<p>Hi! So happy you're here! To get started let's get some information from you!</p>
+<p> Please enter your full name and Email address below. </p>
+
+<h1 style= "text-align: center;" >Customer Information Form </h1>
+
+<!-- Here is where the user's information will be collected -->
+<form id= "customerInformationForm" action= "onsubmit=" return validationForm()" method="post">
+
+		<table>
+		<tr>
+			<td> First Name:</td>
+			<td><input type="text" id="firstname" onkeyup="validate();"/></td>
+			<td><div id="errorFirstname"></div></td>
+		</tr>
+		<tr>
+			<td> Last Name:</td>
+			<td><input type="text" id="lastname" onkeyup="validate();"/></td>
+			<td><div id="errorLastname"></div></td>
+		</tr>
+		<tr>
+			<td> Email:</td>
+			<td><input type="text" id="email" onkeyup="validate();"/></td>
+			<td><div id="errorEmail"></div></td>
+		</tr>
+		<tr>
+			<td> Username:</td>
+			<td><input type="text" id="username" onkeyup="validate();"/></td>
+			<td><div id="errorUid"></div></td>
+		</tr>
+		<tr>
+			<td> Password:</td>
+			<td><input type="password" id="password" onkeyup="validate();"/></td>
+			<td><div id="errorPassword"></div></td>
+		</tr>
+		<tr>
+			<td> Confirm Password:</td>
+			<td><input type="password" id="confirmpassword" onkeyup="validate();"/></td>
+			<td><div id="errorConfirmPassword"></div></td>
+		</tr>
+		<tr>
+			<td><input type="button" id="submit" value="Submit" onclick="validate();finalValidate();"/></td>
+			<td><div id="errorFinal"></div></td>
+		</tr>
+	</table>
+
+
+<!--Define the variables and functions with Javascript-->
+	<script>
+		<!--Declare the array for the error message displaying area-->
+		var divs = [
+		  "errorFirstname", 
+		  "errorLastname", 
+		  "errorEmail",
+		  "errorUsername", 
+		  "errorPassword", 
+		  "errorConfirmPassword"
+		];
+		
+		<!--Function to validate date each input area-->
+		function validate()
+		{
+			<!--Read all input areas-->
+			var inputs = [];
+			inputs[0] = document.getElementById("firstname").value;
+			inputs[1] = document.getElementById("lastname").value;
+			inputs[2] = document.getElementById("email").value;
+			inputs[3] = document.getElementById("username").value;
+			inputs[4] = document.getElementById("password").value;
+			inputs[5] = document.getElementById("confirmpassword").value;
+			
+			<!--Declare the array for all error messages-->
+			var errors = [];
+			errors[0] = "<span style='color:black'> Please enter your first name!</span>"
+			errors[1] = "<span style='color:black'> Please enter your last name!</span>"
+			errors[2] = "<span style='color:black'> Please enter a valid E-mail address!</span>"
+			errors[3] = "<span style='color:black'> Please enter a valid username!</span>"
+			errors[4] = "<span style='color:black'> Please enter your password!</span>"
+			errors[5] = "<span style='color:black'> Please make sure your passwords match!></span>"
+			
+			<!--Validate the inputs-->
+			var i;
+			for (i=0; i<inputs.length; i++)
+			{
+				var errorMessage = errors[i];
+				var entry = divs[i];
+				
+				<!--If input is empty, display the error message-->
+				if (inputs[i] == "")
+					document.getElementById(entry).innerHTML = errorMessage;
+				else if (i == 2)
+				{
+					<!--Evaluate if the email input is valid-->
+					var atpos = inputs[i].indexOf("@");  <!--Get the index of symbol "@"-->
+					var dotpos = inputs[i].lastIndexOf("."); <!--Get the index of the last "."-->
+					
+					<!--atpos<1: "@" is not in the input or occurs in the beginning-->
+					<!--dotpos < atpos + 2: Two other digits have to be there between "@" and the last "."-->
+					<!--dotpos >= inputs[i].length: "@" cannot be the last symbol in the input-->
+					if (atpos < 1 || dotpos < atpos + 2 || dotpos >= inputs[i].length)
+						document.getElementById(entry).innerHTML = "<span style = 'color:black' > Please enter a valid email address!</span>";
+					else
+						<!--Otherwise displa messaige "Good!"-->
+						document.getElementById(entry).innerHTML = "Good!";
+				}
+				else if (i == 5) 
+				{
+					<!--Check the confirmation password-->
+					if (inputs[4] != inputs[5]) <!--If the first password does not match the second password-->
+						document.getElementById(entry).innerHTML = "<span style = 'color:black'> Your passwords don't match!</span>";
+					else
+						document.getElementById(entry).innerHTML = "Good!";
+				}
+				else
+					document.getElementById(entry).innerHTML = "Good!";
+			}
+		}
+		
+		<!--The validation function when clicking the "Submit" button-->
+		function finalValidate()
+		{
+			var i;
+			var flag = 1;
+			for (i=0; i<divs.length; i++)
+			{
+				<!--Check if all error messages are "Good!"-->
+				if (document.getElementById(divs[i]).innerHTML != "Good!")
+					flag = 0;
+			}
+			
+			if (flag == 1) <!---Display the message if everything is correct->
+				document.getElementById("errorFinal").innerHTML = "The data entered is correct!"
+		}
+	</script>
+</head>
+
+	</Form>
+	</Body>
+	</Html>
